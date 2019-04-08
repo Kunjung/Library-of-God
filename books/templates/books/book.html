@@ -1,0 +1,22 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+	Books For All
+{% endblock %}
+
+{% block body %}
+	<h1>Book {{ book.name }} </h1>
+	<p>Summary: {{ book.summary }}</p>
+
+	<h3>Current Owner</h3>
+	<ul>
+		{% for owner in owners %}
+			{{ owner }}
+		{% endfor %}
+	</ul>
+
+	<hr>
+	<a href="{% url 'index' %}">Back to All Books List</a>
+
+
+{% endblock %}
