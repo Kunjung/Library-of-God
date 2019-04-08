@@ -11,7 +11,7 @@
 	<h3>Current Owner</h3>
 	<ul>
 		{% for owner in owners %}
-			{{ owner }}
+			<a href="{% url 'person' owner.id %}"  >{{ owner }}</a>
 		{% endfor %}
 	</ul>
 

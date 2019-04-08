@@ -23,3 +23,16 @@ def book(request, book_id):
         "owners": book.owners.all()
     }
     return render(request, "books/book.html", context)
+
+
+def person(request, person_id):
+    try:
+        person = Person.objects.get(pk=person_id)
+    except Person.DoesNotExist:
+        raise Http404("Person does not exist.")
+
+    context = {
+        "person": person,
+        "owned_books": person.owned_books.all()
+    }
+    return render(request, "books/person.html", context)
