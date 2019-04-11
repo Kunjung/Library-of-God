@@ -20,7 +20,7 @@ class Wish(models.Model):
 
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="wishes")
     wisher = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="wishes") ### The Person who is making the wish
-    angel = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='wishes_fulfilled', null=True) ### The Person who fulfills the wish therefore, the ANGEL
+    angel = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='wishes_to_fulfill', null=True) ### The Person who fulfills the wish therefore, the ANGEL
 
     fulfilled = models.BooleanField(default=False)
     desire_lvl = models.IntegerField(default=1)

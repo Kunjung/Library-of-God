@@ -1,27 +1,22 @@
 {% extends "books/base.html" %}
 
 {% block title %}
-	Wishes For All
+	Hero Time
 {% endblock %}
 
 {% block body %}
-	<h1>Wish Bucket List of {{ person }}</h1>
-    <h3>What I Want from my Secret Santa?</h3>
+	<h1>Time for {{ person }} to be a Secret Santa for someone.</h1>
+    <h3>It's Hero Time.</h3>
     <ul>
-    {% for wish in wishes %}
+    {% for wish in wishes_to_fulfill %}
         <li>
             <p>Book: {{ wish.book }}</p>
-            <p>Requested to: {{ wish.angel }}</p>
+            <p>Requested by: {{ wish.wisher }}</p>
             <p>Desire Level {{ wish.desire_lvl }}</p>
             <p><b>Fulfilled or Not?: {{ wish.fulfilled }} </b></p>
         </li>
     {% endfor %}
     </ul>
-
-    <hr>
-
-    <h1>Time to Be A Hero</h1>
-    <h2>Make someone's Wish come True. <a href="{% url 'angel' person.id %}">Hero Time</a></h2>
 
 	<hr>
 	<a href="{% url 'index' %}">Back to All Books List</a>

@@ -48,3 +48,16 @@ def wishlist(request, person_id):
         "wishes": person.wishes.all()
     }
     return render(request, "books/wishlist.html", context)
+
+
+def angel(request, person_id):
+    try:
+        person = Person.objects.get(pk=person_id)
+    except Person.DoesNotExist:
+        raise Http404("Person does not exist.")
+
+    context = {
+        "person": person,
+        "wishes_to_fulfill": person.wishes_to_fulfill.all()
+    }
+    return render(request, "books/angel.html", context)
