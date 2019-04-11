@@ -23,3 +23,11 @@ b1.save()
 b2.save()
 b3.save()
 print("Done Loading Dummy Data")
+
+w1 = Wish(book=b1, wisher=kunjung, angel=b1.owner)
+w1.save()
+
+w2 = Wish(book=b2, wisher=mingmar, angel=b2.owner)
+w3 = Wish(book=b3, wisher=mingmar, angel=b3.owner)
+w2.save()
+w3.save()
