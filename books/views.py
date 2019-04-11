@@ -19,8 +19,7 @@ def book(request, book_id):
         raise Http404("Book does not exist.")
 
     context = {
-        "book": book,
-        "owners": book.owners.all()
+        "book": book
     }
     return render(request, "books/book.html", context)
 
@@ -33,6 +32,6 @@ def person(request, person_id):
 
     context = {
         "person": person,
-        "owned_books": person.owned_books.all()
+        "books": person.books.all()
     }
     return render(request, "books/person.html", context)

@@ -10,9 +10,8 @@
 
 	<h3>Current Owner</h3>
 	<ul>
-		{% for owner in owners %}
-			<a href="{% url 'person' owner.id %}"  >{{ owner }}</a>
-		{% endfor %}
+		<a href="{% url 'person' book.owner.id %}"  >{{ book.owner }}</a>
+
 	</ul>
 
 	<hr>

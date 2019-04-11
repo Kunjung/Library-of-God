@@ -5,14 +5,13 @@
 {% endblock %}
 
 {% block body %}
-	<h2>Username: {{ person.username }} </h2>
-	<h2>Full Name {{ person.first }} {{ person.last}}</h2>
+	<h2>Username: {{ person.name }} </h2>
 
     <hr>
-    
-	<h3>All Books owned by {{ person.first }}</h3>
+
+	<h3>All Books owned by {{ person.name }}</h3>
 	<ul>
-		{% for book in owned_books %}
+		{% for book in books %}
 			<li> {{ book }} </li>
 		{% endfor %}
 	</ul>
