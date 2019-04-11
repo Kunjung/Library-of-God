@@ -1,0 +1,33 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+	Books of {{ person.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>The Book List of {{ person.name }} </h1>
+
+    <ul>
+        {% for book in books %}
+            <li> {{ book }} </li>
+        {% empty %}
+            <li> No Books added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>Add a New Book</h2>
+    <form action="{% url 'addbook' person.id %}" method="post">
+		{% csrf_token %}
+		Name: <input type="text" name="name">
+        Summary: <input type="text" name="summary">
+		<input type="submit" value="Add Book">
+	</form>
+
+
+	<hr>
+	<a href="{% url 'index' %}">Back to All Books List</a>
+
+
+{% endblock %}

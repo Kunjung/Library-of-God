@@ -36,6 +36,18 @@ def person(request, person_id):
     }
     return render(request, "books/person.html", context)
 
+def yourbooks(request, person_id):
+    try:
+        person = Person.objects.get(pk=person_id)
+    except Person.DoesNotExist:
+        raise Http404("Person does not exist.")
+
+    context = {
+        "person": person,
+        "books": person.books.all()
+    }
+    return render(request, "books/yourbooks.html", context)
+
 
 def wishlist(request, person_id):
     try:

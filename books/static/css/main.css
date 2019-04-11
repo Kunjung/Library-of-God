@@ -1,0 +1,27 @@
+body {
+    padding-left: 65px;
+    font-family: 'Sue Ellen Francisco', cursive;
+    font-size: 32px;
+    color: #232B2B;
+}
+h1, h2, h3, h4 {
+    font-family: 'Amatic SC', bold;
+}
+
+h1 {
+    font-size: 100px;
+}
+
+h2 {
+    font-size: 60px;
+}
+
+h3 {
+    font-size: 50px;
+}
+
+a {
+    color: #C25100;
+    font-family: 'Amatic SC', bold;
+
+}
