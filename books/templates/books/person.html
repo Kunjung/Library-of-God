@@ -16,6 +16,9 @@
 		{% endfor %}
 	</ul>
 
+	<h3>All Wishes made by {{ person.name }} <a href="{% url 'wishlist' person.id %}">secret santa</a></h3>
+
+
 	<hr>
 	<a href="{% url 'index' %}">Back to All Books List</a>
 
