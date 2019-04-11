@@ -25,6 +25,25 @@ class Person(models.Model):
         return f"{self.first} {self.last}"
 
 
+
+class P(models.Model):
+    name = models.CharField(max_length=8)
+
+    def __str__(self):
+        return f"Person {self.name}"
+
+class B(models.Model):
+    name = models.CharField(max_length=8)
+    owner = models.ForeignKey(P, on_delete=models.CASCADE, related_name="books")
+
+    def __str__(self):
+        return f"Book {self.name}"
+
+
+
+
+
+
 ## Old DataBase Models for the One to many relationship.
 ## I can query the database fine. But querying like this:
 ## Books.objects.filter(current_owner=p) is gonna be a lot a lot of waste of db
