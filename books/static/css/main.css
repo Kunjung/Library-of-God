@@ -24,5 +24,11 @@ h3 {
 a {
     color: #C25100;
     font-family: 'Amatic SC', bold;
-
+}
+.wish {
+    color: #12DE10;
+    font-family: 'Amatic SC', bold;
+}
+.error {
+    color: #DE2020;
 }

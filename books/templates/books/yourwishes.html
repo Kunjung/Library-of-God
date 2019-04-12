@@ -1,0 +1,41 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+	Wishes of {{ person.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>The Wish List of {{ person.name }} </h1>
+
+    <ul>
+        {% for wish in wishes %}
+            <li>  {{ wish }} <span class="wish"> ---------------------------------> Fulfilled:  {{ wish.fulfilled }} </span> </li>
+        {% empty %}
+            <li> No wishes made yet.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>Make a New Wish</h2>
+    <form action="{% url 'addwish' person.id %}" method="post">
+		{% csrf_token %}
+		Book:
+            <select name="book_id">
+    			{% for nbook in newbooks %}
+    				<option value="{{ nbook.id }}"> {{ nbook }} </option>
+                {% empty %}
+                    <option value="null" class="error"> Sorry there are no new books to wish upon.</option>
+    			{% endfor %}
+    		</select>
+        Desire Level: <input type="text" name="desire_lvl">
+
+		<input type="submit" value="Make Wish">
+	</form>
+
+
+	<hr>
+	<a href="{% url 'index' %}">Back to All Books List</a>
+
+
+{% endblock %}
