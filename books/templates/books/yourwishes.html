@@ -9,7 +9,7 @@
 
     <ul>
         {% for wish in wishes %}
-            <li>  {{ wish }} <span class="wish"> ---------------------------------> Fulfilled:  {{ wish.fulfilled }} </span> </li>
+            <li>  {{ wish }} <span class="wish"> ------------ Rank : {{ wish.rank }} ---------------> Fulfilled:  {{ wish.fulfilled }} </span> </li>
         {% empty %}
             <li> No wishes made yet.</li>
         {% endfor %}

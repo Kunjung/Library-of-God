@@ -5,6 +5,9 @@ from django.urls import reverse
 
 from .models import Person, Book, Wish
 
+### The Matching Algorithm ###
+from .algorithm_king_and_queen import begin_King_and_Queen_Match
+
 # Create your views here.
 
 ## Index Page shows all the books that have the Field value of "Available" = True
@@ -114,7 +117,7 @@ def yourwishes(request, person_id):
 	context = {
 		"person": person,
 		"wishes": person.wishes.all(),
-		"available_ranks": [ rank for rank in [1, 2, 3, 4, 5, 6, 7] if rank not in wished_ranks ],
+		"available_ranks": [ rank for rank in [1, 2] if rank not in wished_ranks ],
 		"newbooks": Book.objects.exclude(id__in = book_id_list).exclude(id__in = wish_book_id_list).all()
 	}
 	return render(request, "books/yourwishes.html", context)
@@ -143,3 +146,53 @@ def addwish(request, person_id):
 	new_wish.save()
 
 	return HttpResponseRedirect(reverse("yourwishes", args=(person_id,) ))
+
+
+
+#############################################################################################
+################# King and Queen Matching View  ###########################################
+def match(request):
+
+	all_books = Book.objects.filter(available=True)		### All books will be kings and queens at the same time. They'll have the rank order of last for themselves
+	faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
+	all_king_preferences = []
+
+	for book in all_books:
+		king_preference = []
+		wishes = book.owner.wishes.filter(fulfilled=False).order_by('rank')
+		queen_books = [wish.book.id for wish in wishes]
+		for queen_book in queen_books:
+			king_preference.append(queen_book)
+		remaining_books = Book.objects.exclude(id__in=king_preference).exclude(id__in=[book.id])
+		for r_book in remaining_books:
+			king_preference.append(r_book.id)
+
+		### Adding yourself to the very end for the non match
+		king_preference.append(book.id)
+
+		### ADDING king_preference of book b[i]
+		all_king_preferences.append(king_preference)
+
+	### Now change all the king preferences from being strings to being indexes based on the faces list
+	all_king_preferences_indexed = []
+	for king_preference in all_king_preferences:
+		king_preference_indexed = [faces.index(king_p) for king_p in king_preference]
+		all_king_preferences_indexed.append(king_preference_indexed)
+
+
+	### King and Queen preferences are the same for the same book
+	matches = begin_King_and_Queen_Match(faces, king_preferences=all_king_preferences_indexed, queen_preferences=all_king_preferences_indexed)
+	info_matches = []
+	for (king, queen) in matches:
+		king_book = Book.objects.get(pk=king)
+		queen_book = Book.objects.get(pk=queen)
+		king_owner = king_book.owner
+		queen_owner = queen_book.owner
+		info_match = f"{king_book} (Person: {king_owner}) --------> matched to ---------> {queen_book} (Person: {queen_owner}) "
+		info_matches.append(info_match)
+
+	context = {
+		"matches": info_matches
+	}
+
+	return render(request, "books/match.html", context)

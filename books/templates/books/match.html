@@ -1,0 +1,17 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+	Book
+{% endblock %}
+
+{% block body %}
+	<h1>Books</h1>
+	<ul>
+		{% for match in matches %}
+			<li>
+			    <div class="kingqueen"> {{ match }} </span>
+			</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}
