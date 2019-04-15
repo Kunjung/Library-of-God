@@ -8,7 +8,7 @@ from .models import Person, Book, Wish
 # Create your views here.
 def index(request):
 	context = {
-		"books": Book.objects.all()
+		"books": Book.objects.filter(available=True)
 	}
 	return render(request, "books/index.html", context)
 
