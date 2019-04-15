@@ -28,7 +28,13 @@
                     <option value="null" class="error"> Sorry there are no new books to wish upon.</option>
     			{% endfor %}
     		</select>
-        Desire Level: <input type="text" name="desire_lvl">
+        Rank Order (Choose Between 1 and 7 and don't repeat):
+			<select name="rank">
+				{% for rank in available_ranks %}
+    				<option value="{{ rank }}"> {{ rank }} </option>
+                {% empty %}
+                    <option value="null" class="error"> Sorry all ranking done for now. Can't add</option>
+    			{% endfor %}
 
 		<input type="submit" value="Make Wish">
 	</form>

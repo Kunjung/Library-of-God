@@ -24,7 +24,7 @@ class Wish(models.Model):
     angel = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='wishes_to_fulfill', null=True) ### The Person who fulfills the wish therefore, the ANGEL
 
     fulfilled = models.BooleanField(default=False)
-    desire_lvl = models.IntegerField(default=1)
+    rank = models.IntegerField(default=1)  ### The Number One Book
 
     def __str__(self):
         return f"{self.wisher} wants '{self.book}' from {self.angel}"
