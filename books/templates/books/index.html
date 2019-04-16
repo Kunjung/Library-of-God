@@ -1,11 +1,20 @@
 {% extends "books/base.html" %}
 
+{% load static %}
+
 {% block title %}
-	Book
+	All Available Books
 {% endblock %}
 
 {% block body %}
-	<h1>Books</h1>
+	<h1>All Available Books</h1>
+
+	<h3 class="center">Top Contributor: (Most wishes fulfilled)</h3>
+	<div class="right">
+		<img class="image" src="{% static 'img/archer.jpg' %}">
+		<p>Name: Archer</p> 
+	</div>
+
 	<ul>
 		{% for book in books %}
 			<li>
