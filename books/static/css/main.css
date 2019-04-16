@@ -51,6 +51,13 @@ a {
   width: 50%;
 }
 
+.left {
+  float: left;
+  width: 320px;
+  border: 2px solid #C25100;
+  padding: 20px;
+}
+
 .right {
   float: right;
   width: 320px;

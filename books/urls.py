@@ -12,6 +12,7 @@ urlpatterns = [
     path('person/<int:person_id>/yourwishes', views.yourwishes, name='yourwishes'),
     path('person/<int:person_id>/addwish', views.addwish, name='addwish'),
 
+    path('person/<int:person_id>/yourmatches', views.yourmatches, name='yourmatches'),
 
     path('match', views.match, name='match'),
 ]

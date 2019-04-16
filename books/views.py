@@ -128,6 +128,23 @@ def addwish(request, person_id):
 	return HttpResponseRedirect(reverse("yourwishes", args=(person_id,) ))
 
 
+def yourmatches(request, person_id):
+	try:
+		person = Person.objects.get(pk=person_id)
+		mybook = person.books.all().first()
+
+	except Person.DoesNotExist:
+		raise Http404("Person does not exist.")
+	except Book.DoesNotExist:
+		raise Http404("Book does not exist.")
+
+	context = {
+		"person": person,
+		"mybook": mybook,
+		"matched_wishes": person.wishes.filter(fulfilled=True)
+	}
+	return render(request, "books/yourmatches.html", context)
+
 
 #############################################################################################
 ################# King and Queen Matching View  ###########################################
