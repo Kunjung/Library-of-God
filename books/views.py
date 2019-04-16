@@ -75,32 +75,6 @@ def addbook(request, person_id):
 
 	return HttpResponseRedirect(reverse("yourbooks", args=(person_id,) ))
 
-## Show all the wishes of a particular person
-def wishlist(request, person_id):
-	try:
-		person = Person.objects.get(pk=person_id)
-	except Person.DoesNotExist:
-		raise Http404("Person does not exist.")
-
-	context = {
-		"person": person,
-		"wishes": person.wishes.all().order_by('rank')
-	}
-	return render(request, "books/wishlist.html", context)
-
-## Show all the wishes to be fulfilled by a Particular Person
-def angel(request, person_id):
-	try:
-		person = Person.objects.get(pk=person_id)
-	except Person.DoesNotExist:
-		raise Http404("Person does not exist.")
-
-	context = {
-		"person": person,
-		"wishes_to_fulfill": person.wishes_to_fulfill.all().order_by('rank')
-	}
-	return render(request, "books/angel.html", context)
-
 
 ## Show all the wishes of a particular person
 def yourwishes(request, person_id):
