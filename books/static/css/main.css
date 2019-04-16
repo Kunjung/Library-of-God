@@ -21,6 +21,10 @@ h3 {
     font-size: 50px;
 }
 
+h4 {
+    font-size: 40px;
+}
+
 a {
     color: #C25100;
     font-family: 'Amatic SC', bold;
@@ -38,7 +42,7 @@ a {
 
 .image {
     alt: "Top Contributor";
-    width: 280px;
+    width: 250px;
 }
 .center {
   display: block;
@@ -50,6 +54,6 @@ a {
 .right {
   float: right;
   width: 320px;
-  border: 3px solid #73AD21;
-  padding: 10px;
+  border: 2px solid #C25100;
+  padding: 20px;
 }
