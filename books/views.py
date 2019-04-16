@@ -39,7 +39,8 @@ def person(request, person_id):
 
 	context = {
 		"person": person,
-		"books": person.books.all()
+		"books": person.books.all(),
+		"wishes": person.wishes.all()
 	}
 	return render(request, "books/person.html", context)
 
@@ -59,10 +60,15 @@ def yourbooks(request, person_id):
 ## Let a person add new books
 def addbook(request, person_id):
 	try:
+		person = Person.objects.get(pk=person_id)
+
+		### LIMIT NUMBER OF BOOKS TO 1 for now - next feature will make it possible to add more books. But not now.
+		if len(person.books.all()) >= 1:
+			return render(request, "books/error.html", {"message": "Sorry You can only add 1 book right now. You will be able to add more books in the next feature only."})
+
 		name = request.POST["name"]
 		summary = request.POST["summary"]
 
-		person = Person.objects.get(pk=person_id)
 	except KeyError:
 		return render(request, "books/error.html", {"message": "No selection."})
 	except Person.DoesNotExist:

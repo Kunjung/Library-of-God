@@ -9,7 +9,7 @@
 
     <ul>
         {% for wish in wishes %}
-            <li>  {{ wish }} <span class="wish"> ------------ Rank : {{ wish.rank }} ---------------> Fulfilled:  {{ wish.fulfilled }} </span> </li>
+            <li><span class="kingqueen">'{{ wish.book }}' from {{ wish.angel }} </span><span class="wish"> ------------ Rank : {{ wish.rank }} ---------------> Fulfilled:  {{ wish.fulfilled }} </span> </li>
         {% empty %}
             <li> No wishes made yet.</li>
         {% endfor %}
@@ -18,6 +18,7 @@
     <hr>
 
     <h2>Make a New Wish</h2>
+	<h4 class="center error">You can only make 3 wishes</h4>
     <form action="{% url 'addwish' person.id %}" method="post">
 		{% csrf_token %}
 		Book:

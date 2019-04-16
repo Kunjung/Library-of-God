@@ -9,15 +9,19 @@
 
     <hr>
 
-	<h3>All Books owned by {{ person.name }}</h3>
+	<h3>All Books owned by {{ person.name }} <a href="{% url 'yourbooks' person.id %}"> Book List</a> </h3>
 	<ul>
 		{% for book in books %}
 			<li> {{ book }} </li>
 		{% endfor %}
 	</ul>
 
-	<h3>All Wishes made by {{ person.name }} <a href="{% url 'yourwishes' person.id %}">Wish List</a></h3>
-
+	<h3>All Wishes made by {{ person.name }} <a href="{% url 'yourwishes' person.id %}"> Wish List </a> </h3>
+	<ul>
+		{% for wish in wishes %}
+			<li> {{ wish.book }} </li>
+		{% endfor %}
+	</ul>
 
 	<hr>
 	<a href="{% url 'index' %}">Back to All Books List</a>

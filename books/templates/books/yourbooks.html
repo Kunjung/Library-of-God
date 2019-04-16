@@ -18,6 +18,7 @@
     <hr>
 
     <h2>Add a New Book</h2>
+	<h4 class="error center">You can only have a total of one book right now.</h4>
     <form action="{% url 'addbook' person.id %}" method="post">
 		{% csrf_token %}
 		Name: <input type="text" name="name">
