@@ -13,8 +13,14 @@
 	<ul>
 		{% for e in exchanges %}
 			<li>
-				{{ e }}
+				{% if e.meeting %}
+					--------------------------------------------------> <span class="exchanged"> {{ e }} </span>
+				{% else %}
+					<span class="notexchanged"> {{ e }} </span>
+				{% endif %}
+				
 			</li>
+			<br>
 		{% empty %}
 				<li> No Exchanges to do.</li>
 		{% endfor %}

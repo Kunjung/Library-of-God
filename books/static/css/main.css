@@ -64,6 +64,45 @@ a {
   border: 2px solid #C25100;
   padding: 20px;
 }
+
+
+
+.fulfilled {
+  border: 18px solid #2ECC40;
+  background-color: #606060;
+  color: #FFFFFF;
+  font-size: 50px;
+  border-radius: 15px 50px 30px 5px
+}
+
+
+.notfulfilled {
+  border: 2px solid #BDB76B;
+  font-size: 20px;
+}
+
 .available {
-    color: #D25150;
+  border: 9px solid #2ECC40;
+  background-color: #606060;
+  color: #FFFFFF;
+  border-radius: 7px 50px 30px 5px;
+  font-size: 35px;
+}
+.notavailable {
+  border: 2px solid #BDB76B;
+  font-size: 20px;
+}
+
+.exchanged {
+  border: 9px solid #2ECC40;
+  background-color: #606060;
+  color: #FFFFFF;
+  border-radius: 7px 50px 30px 5px;
+  font-size: 25px;
+}
+
+.notexchanged {
+  border: 2px solid #BDB76B;
+  font-size: 20px;
+
 }

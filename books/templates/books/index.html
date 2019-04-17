@@ -19,7 +19,13 @@
 	<ul>
 		{% for book in books %}
 			<li>
-				<a href="{% url 'book' book.id %}">{{ book }}</a> -----------------> <span class="available">Availability: {{ book.available }}</span>
+				<a href="{% url 'book' book.id %}">{{ book }}</a> 
+
+				{% if book.available %}
+					..................................<span class="available">Yep</span>
+				{% else %}
+					..................................<span class="notavailable">Nope</span>
+				{% endif %}		
 			</li>
 		{% endfor %}
 	</ul>

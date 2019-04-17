@@ -67,6 +67,15 @@ def changebookavailability(request, person_id):
 
 		if book.owner != person:
 			return render(request, "books/error.html", {"message": "Can't change someone else's book Boy or Girl."})
+
+		### STOP if the book is waiting to be exchanged
+		### Here the condition will be true when The Exchange object for the person has been created and the meeting is False
+		### and also when the wish object is there where the Wish.angel is the person and fulfilled = True
+		wish2fulfill = person.wishes_to_fulfill.filter(book=book).filter(fulfilled=True)
+		if len(wish2fulfill) >= 1:
+			message = "Can't change the availability now. You fulfilled the wish and The Book is waiting to be exchanged to someone else."
+			return render(request, "books/error.html", {"message": message})
+
 	except KeyError:
 		# available = request.POST["available"]
 		message = "Key Error " + str(book_available)
@@ -173,7 +182,7 @@ def yourmatches(request, person_id):
 
 
 def allexchanges(request):
-	exchanges = Exchange.objects.filter(meeting=False)
+	exchanges = Exchange.objects.all()
 
 	context = {
 		"exchanges": exchanges,

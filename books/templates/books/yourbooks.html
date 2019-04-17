@@ -10,7 +10,13 @@
 
     <ul>
         {% for book in books %}
-            <li> {{ book }}  -----------------> <span class="available">Availability: {{ book.available }}</span> </li>
+            <li> <span>{{ book }}  ------------------------></span>
+            	{% if book.available %}
+            		<span class="available">Available</span>
+            	{% else %}
+            		<span class="notavailable">Not Available</span>
+            	{% endif %}
+            </li>
         {% empty %}
             <li> No Books added yet.</li>
         {% endfor %}
