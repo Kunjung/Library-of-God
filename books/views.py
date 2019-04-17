@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 
 
-from .models import Person, Book, Wish
+from .models import Person, Book, Wish, Exchange
 
 ### The Matching Algorithm ###
 from .algorithm_king_and_queen import begin_King_and_Queen_Match
@@ -171,8 +171,35 @@ def yourmatches(request, person_id):
 	return render(request, "books/yourmatches.html", context)
 
 
-#############################################################################################
-################# King and Queen Matching View  ###########################################
+
+def allexchanges(request):
+	exchanges = Exchange.objects.filter(meeting=False)
+
+	context = {
+		"exchanges": exchanges,
+	}
+	return render(request, "books/allexchanges.html", context)
+
+
+
+def yourexchanges(request, person_id):
+	try:
+		person = Person.objects.get(pk=person_id)
+		exchanges = Exchange.objects.filter(king=person).exclude(meeting=True)
+	except Person.DoesNotExist:
+		raise Http404("Person does not exist.")
+	except Exchange.DoesNotExist:
+		raise Http404("Exchange does not exist.")
+
+	context = {
+		"person": person,
+		"exchanges": exchanges,
+	}
+	return render(request, "books/yourexchanges.html", context)
+
+
+#######################################################################################################################################################
+################# King and Queen Matching View  ############################################################################################################
 def match(request):
 
 	all_books = Book.objects.filter(available=True)		### All books will be kings and queens at the same time. They'll have the rank order of last for themselves
@@ -181,7 +208,7 @@ def match(request):
 
 	## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
 	if len(all_books) < 2/3 * len(complete_book_collection):
-		message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + "**** Available Book Number: " + str(len(all_books))
+		message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + " .  Available Book Number: " + str(len(all_books))
 		return render(request, "books/error.html", {"message": message})
 
 	faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
@@ -223,8 +250,34 @@ def match(request):
 		info_match = f"{king_book} (Person: {king_owner}) --------> matched to ---------> {queen_book} (Person: {queen_owner}) "
 		info_matches.append(info_match)
 
+
+	### Set all the kings wishes to fulfilled = True
+	for (king_id, queen_id) in matches:
+		king_book = Book.objects.get(pk=king_id)
+		queen_book = Book.objects.get(pk=queen_id)
+		king = king_book.owner
+		queen = queen_book.owner
+		
+		### The queen's book is what is being wished for, the king makes the wish so he is the wisher and the queen is the angel
+		king_wish = Wish.objects.filter(book=queen_book, wisher=king, angel=queen).first()
+		if king_wish:
+			king_wish.fulfilled = True
+			king_wish.save()
+
+			### Now the queen's book becomes not available for anyone else. It is married now.
+			queen_book.available = False
+			queen_book.save()
+
+		### For each king and queen pair, now make the exchange objects and set the meeting value to false
+		exchange = Exchange(king=king, queen=queen, meeting=False) ### Not met yet. Gonna meet soon.
+		exchange.save()
+
+
 	context = {
 		"matches": info_matches
 	}
 
 	return render(request, "books/match.html", context)
+
+
+###############################################################################################################################################

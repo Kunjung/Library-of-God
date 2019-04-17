@@ -1,0 +1,23 @@
+{% extends "books/base.html" %}
+
+{% load static %}
+
+{% block title %}
+	All Exchanges ToDo
+{% endblock %}
+
+{% block body %}
+	<h1>All Exchanges ToDo</h1>
+
+
+	<ul>
+		{% for e in exchanges %}
+			<li>
+				{{ e }}
+			</li>
+		{% empty %}
+				<li> No Exchanges to do.</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}

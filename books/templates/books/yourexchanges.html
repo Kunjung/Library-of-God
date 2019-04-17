@@ -1,0 +1,39 @@
+{% extends "books/base.html" %}
+
+{% load static %}
+{% block title %}
+	Exchange ToDo for {{ person.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>ToDo Exchanges for {{ person.name }} </h1>
+
+    <ul>
+        {% for e in exchanges %}
+            <li><span class="kingqueen"> {{ e }} </span> </li>
+
+            <div class="left">
+        		<h4>Exchange Ready</h4>
+        		<h4>(Let the exchange begin.)</h4>
+        		<img class="image" src="{% static 'img/mingmar.jpg' %}">
+        		<p>Name: Aagya</p>
+        	</div>
+
+            <div class="right">
+        		<h4>Exchange Ready</h4>
+        		<h4>(Let the exchange begin.)</h4>
+        		<img class="image" src="{% static 'img/aagya.jpg' %}">
+        		<p>Name: Mingmar</p>
+        	</div>
+
+        {% empty %}
+            <li> No matches yet.</li>
+        {% endfor %}
+    </ul>
+
+
+	<hr>
+	<a href="{% url 'index' %}">Back to All Books List</a>
+
+
+{% endblock %}

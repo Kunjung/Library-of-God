@@ -1,6 +1,12 @@
 {% extends "books/base.html" %}
 
 {% block title %}Error{% endblock %}
+
+
 {% block body %}
-<h1>Error: {{ message }}</h1>
+
+
+<h1>Error: <span class="error"> {{ message }} </span></h1>
+
+
 {% endblock %}
