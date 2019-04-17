@@ -122,7 +122,7 @@ def yourwishes(request, person_id):
 	context = {
 		"person": person,
 		"wishes": person.wishes.all(),
-		"available_ranks": [ rank for rank in [1, 2] if rank not in wished_ranks ],
+		"available_ranks": [ rank for rank in [1, 2, 3] if rank not in wished_ranks ],
 		"newbooks": Book.objects.exclude(id__in = book_id_list).exclude(id__in = wish_book_id_list).all()
 	}
 	return render(request, "books/yourwishes.html", context)
@@ -207,9 +207,15 @@ def match(request):
 	complete_book_collection = Book.objects.all()
 
 	## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
+	## Stop it if it fails the Condition #1.
 	if len(all_books) < 2/3 * len(complete_book_collection):
 		message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + " .  Available Book Number: " + str(len(all_books))
 		return render(request, "books/error.html", {"message": message})
+
+	## STOP CONDITION #2. Stop King Queen Match when not enough wishes are made.
+	## Every 2/3 person should make at least 3 wishes. Otherwise, don't run algorithm
+	all_persons = Person.objects.all()
+
 
 	faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
 	all_king_preferences = []
@@ -269,7 +275,7 @@ def match(request):
 			queen_book.save()
 
 		### For each king and queen pair, now make the exchange objects and set the meeting value to false
-		exchange = Exchange(king=king, queen=queen, meeting=False) ### Not met yet. Gonna meet soon.
+		exchange = Exchange(king=king, queen=queen, meeting=False, kingbook=king_book, queenbook=queen_book) ### Not met yet. Gonna meet soon.
 		exchange.save()
 
 
