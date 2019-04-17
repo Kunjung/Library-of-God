@@ -34,6 +34,9 @@ class Exchange(models.Model):
     king = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="king_exchanges")
     queen = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="queen_exchanges")
 
+    kingbook = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="kingbook_exchanges", null=True)
+    queenbook = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="queenbook_exchanges", null=True)
+
     meeting = models.BooleanField(default=False)
 
     def __str__(self):
