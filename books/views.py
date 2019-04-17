@@ -215,9 +215,9 @@ def match(request):
 	### King and Queen preferences are the same for the same book
 	matches = begin_King_and_Queen_Match(faces, king_preferences=all_king_preferences_indexed, queen_preferences=all_king_preferences_indexed)
 	info_matches = []
-	for (king, queen) in matches:
-		king_book = Book.objects.get(pk=king)
-		queen_book = Book.objects.get(pk=queen)
+	for (king_id, queen_id) in matches:
+		king_book = Book.objects.get(pk=king_id)
+		queen_book = Book.objects.get(pk=queen_id)
 		king_owner = king_book.owner
 		queen_owner = queen_book.owner
 		info_match = f"{king_book} (Person: {king_owner}) --------> matched to ---------> {queen_book} (Person: {queen_owner}) "
