@@ -13,7 +13,7 @@ from .algorithm_king_and_queen import begin_King_and_Queen_Match
 ## Index Page shows all the books that have the Field value of "Available" = True
 def index(request):
 	context = {
-		"books": Book.objects.filter(available=True)
+		"books": Book.objects.all()
 	}
 	return render(request, "books/index.html", context)
 
@@ -53,33 +53,58 @@ def yourbooks(request, person_id):
 
 	context = {
 		"person": person,
-		"books": person.books.all()
+		"books": person.books.all(),
 	}
 	return render(request, "books/yourbooks.html", context)
 
-## Let a person add new books
-def addbook(request, person_id):
+def changebookavailability(request, person_id):
 	try:
+		book_id = int(request.POST["book_id"])
+		book_available = request.POST.get("available", False)
+		book = Book.objects.get(pk=book_id)
 		person = Person.objects.get(pk=person_id)
+		book_available = bool(book_available)
 
-		### LIMIT NUMBER OF BOOKS TO 1 for now - next feature will make it possible to add more books. But not now.
-		if len(person.books.all()) >= 1:
-			return render(request, "books/error.html", {"message": "Sorry You can only add 1 book right now. You will be able to add more books in the next feature only."})
-
-		name = request.POST["name"]
-		summary = request.POST["summary"]
-
+		if book.owner != person:
+			return render(request, "books/error.html", {"message": "Can't change someone else's book Boy or Girl."})
 	except KeyError:
-		return render(request, "books/error.html", {"message": "No selection."})
+		# available = request.POST["available"]
+		message = "Key Error " + str(book_available)
+		print(message)
+		return render(request, "books/error.html", {"message": message})
 	except Person.DoesNotExist:
 		return render(request, "books/error.html", {"message": "No person."})
+	except Book.DoesNotExist:
+		return render(request, "books/error.html", {"message": "No book."})
 	except:
 		return render(request, "books/error.html", {"message": "Unknown Error"})
-
-	new_book = Book(name = name, summary = summary, owner = person)
-	new_book.save()
-
+	book.available = book_available
+	book.save()
 	return HttpResponseRedirect(reverse("yourbooks", args=(person_id,) ))
+
+# ## Let a person add new books
+# def addbook(request, person_id):
+# 	try:
+# 		person = Person.objects.get(pk=person_id)
+#
+# 		### LIMIT NUMBER OF BOOKS TO 1 for now - next feature will make it possible to add more books. But not now.
+# 		if len(person.books.all()) >= 1:
+# 			return render(request, "books/error.html", {"message": "Sorry You can only add 1 book right now. You will be able to add more books in the next feature only."})
+#
+# 		name = request.POST["name"]
+# 		summary = request.POST["summary"]
+#
+# 	except KeyError:
+# 		return render(request, "books/error.html", {"message": "No selection."})
+# 	except Person.DoesNotExist:
+# 		return render(request, "books/error.html", {"message": "No person."})
+# 	except:
+# 		return render(request, "books/error.html", {"message": "Unknown Error"})
+#
+# 	new_book = Book(name = name, summary = summary, owner = person)
+# 	new_book.save()
+#
+# 	return HttpResponseRedirect(reverse("yourbooks", args=(person_id,) ))
 
 
 ## Show all the wishes of a particular person
@@ -151,6 +176,14 @@ def yourmatches(request, person_id):
 def match(request):
 
 	all_books = Book.objects.filter(available=True)		### All books will be kings and queens at the same time. They'll have the rank order of last for themselves
+
+	complete_book_collection = Book.objects.all()
+
+	## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
+	if len(all_books) < 2/3 * len(complete_book_collection):
+		message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + "**** Available Book Number: " + str(len(all_books))
+		return render(request, "books/error.html", {"message": message})
+
 	faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
 	all_king_preferences = []
 
@@ -160,6 +193,8 @@ def match(request):
 		queen_books = [wish.book.id for wish in wishes]
 		for queen_book in queen_books:
 			king_preference.append(queen_book)
+
+		### Make sure the remaining_books is ordered in a random way for every user
 		remaining_books = Book.objects.exclude(id__in=king_preference).exclude(id__in=[book.id])
 		for r_book in remaining_books:
 			king_preference.append(r_book.id)

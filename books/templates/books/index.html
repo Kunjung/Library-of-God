@@ -19,7 +19,7 @@
 	<ul>
 		{% for book in books %}
 			<li>
-				<a href="{% url 'book' book.id %}">{{ book }}</a>
+				<a href="{% url 'book' book.id %}">{{ book }}</a> -----------------> <span class="available">Availability: {{ book.available }}</span>
 			</li>
 		{% endfor %}
 	</ul>

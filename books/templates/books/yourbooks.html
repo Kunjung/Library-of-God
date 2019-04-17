@@ -6,10 +6,11 @@
 
 {% block body %}
 	<h1>The Book List of {{ person.name }} </h1>
+	<h4 class="error center">You can only have a total of one book right now.</h4>
 
     <ul>
         {% for book in books %}
-            <li> {{ book }} </li>
+            <li> {{ book }}  -----------------> <span class="available">Availability: {{ book.available }}</span> </li>
         {% empty %}
             <li> No Books added yet.</li>
         {% endfor %}
@@ -17,13 +18,20 @@
 
     <hr>
 
-    <h2>Add a New Book</h2>
-	<h4 class="error center">You can only have a total of one book right now.</h4>
-    <form action="{% url 'addbook' person.id %}" method="post">
+    <h2>Change Availability</h2>
+	<h4 class="error center">Change Availability of the book to False if you're currently reading it or can't share it right now.</h4>
+	<form action="{% url 'changebookavailability' person.id %}" method="post">
 		{% csrf_token %}
-		Name: <input type="text" name="name">
-        Summary: <input type="text" name="summary">
-		<input type="submit" value="Add Book">
+		Name: <select name="book_id">
+			{% for book in books %}
+				<option value="{{ book.id }}"> {{ book }} </option>
+			{% empty %}
+				<option value="null" class="error"> No books.</option>
+			{% endfor %}
+		</select>
+
+        Availability: <input type="checkbox" name="available" checked>
+		<input type="submit" value="Change Availability">
 	</form>
 
 
