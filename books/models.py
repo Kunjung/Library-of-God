@@ -28,3 +28,13 @@ class Wish(models.Model):
 
     def __str__(self):
         return f"{self.wisher} wants '{self.book}' from {self.angel}"
+
+
+class Exchange(models.Model):
+    king = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="king_exchanges")
+    queen = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="queen_exchanges")
+
+    meeting = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.person1} and {self.person} should meet in person. Meeting Done?: {self.meeting}"
