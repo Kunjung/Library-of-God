@@ -13,27 +13,31 @@
             <li><span class="kingqueen">Exchange your book "{{ mybook }}" ---------------to get----------------- "{{ wish.book }}" from {{ wish.angel }}</span> </li>
 
             <div class="left">
-        		<h4>Exchange Ready</h4>
-        		<h4>(Let the exchange begin.)</h4>
-        		<img class="image" src="{% static 'img/mingmar.jpg' %}">
-        		<p>Name: Aagya</p>
-        	</div>
+                <h4>Let the exchange begin.</h4>
+    
+                {% if wish.wisher.photo %}
+                    <img class="image" src="{{ wish.wisher.photo.url }}">
+                {% endif %}
+    
+                <p>Name: {{ wish.wisher }}</p>
+                <p>Book: {{ mybook }}</p>
+            </div>
 
             <div class="right">
-        		<h4>Exchange Ready</h4>
-        		<h4>(Let the exchange begin.)</h4>
-        		<img class="image" src="{% static 'img/aagya.jpg' %}">
-        		<p>Name: Mingmar</p>
-        	</div>
+                <h4>Let the exchange begin.</h4>
+    
+                {% if wish.angel.photo %}
+                    <img class="image" src="{{ wish.angel.photo.url }}">
+                {% endif %}
+
+                <p>Name: {{ wish.angel }}</p>
+                <p>Book: {{ wish.book }}</p>
+            </div>
 
         {% empty %}
             <li> No matches yet.</li>
         {% endfor %}
     </ul>
-
-
-	<hr>
-	<a href="{% url 'index' %}">Back to All Books List</a>
 
 
 {% endblock %}

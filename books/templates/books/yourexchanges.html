@@ -14,17 +14,25 @@
             <li class="center available">exchange "{{ e.kingbook }}"" for "{{ e.queenbook }}"</li>
 
             <div class="left">
-        		<h4>Exchange Ready</h4>
         		<h4>(Let the exchange begin.)</h4>
-        		<img class="image" src="{% static 'img/mingmar.jpg' %}">
-        		<p>Name: Aagya</p>
+    
+                {% if e.king.photo %}
+            		<img class="image" src="{{ e.king.photo.url }}">
+                {% endif %}
+    
+        		<p>Name: {{ e.king }}</p>
+                <p>Book: {{ e.kingbook }}</p>
         	</div>
 
             <div class="right">
-        		<h4>Exchange Ready</h4>
         		<h4>(Let the exchange begin.)</h4>
-        		<img class="image" src="{% static 'img/aagya.jpg' %}">
-        		<p>Name: Mingmar</p>
+    
+                {% if e.queen.photo %}
+            		<img class="image" src="{{ e.queen.photo.url }}">
+                {% endif %}
+
+        		<p>Name: {{ e.queen }}</p>
+                <p>Book: {{ e.queenbook }}</p>
         	</div>
 
         {% empty %}
@@ -32,9 +40,6 @@
         {% endfor %}
     </ul>
 
-
-	<hr>
-	<a href="{% url 'index' %}">Back to All Books List</a>
 
 
 {% endblock %}

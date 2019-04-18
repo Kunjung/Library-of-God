@@ -7,6 +7,10 @@
 {% block body %}
 	<h2>Username: {{ person.name }} </h2>
 
+	{% if person.photo %}
+		<img class="photo right" src="{{ person.photo.url }}"/>
+	{% endif %}
+
     <hr>
 
 	<h3>All Books owned by {{ person.name }} <a href="{% url 'yourbooks' person.id %}"> Book List</a> </h3>
@@ -24,11 +28,13 @@
 	</ul>
 	<h3>All Matches for {{ person.name }} <a href="{% url 'yourmatches' person.id %}"> Match List </a> </h3>
 
-	<h3>All Exchanges ToDo for {{ person.name }} <a href="{% url 'yourexchanges' person.id %}"> Exchange List </a> </h3>
-	<a href="{% url 'yourexchanges' person.id %}"> <h4 class="center available"> Time to Meet someone in person  </h4></a>
+	<h3>All Exchanges ToDo for {{ person.name }} 
+		<a href="{% url 'yourexchanges' person.id %}"> 
+			Exchange List
+			<span class="center available"> Time to Meet someone in person </span> 
+		</a> 
+	</h3>
 
-	<hr>
-	<a href="{% url 'index' %}">Back to All Books List</a>
 
 
 {% endblock %}

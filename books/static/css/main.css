@@ -106,3 +106,26 @@ a {
   font-size: 20px;
 
 }
+
+.photo {
+  width: 350px;
+  border: 2px solid #BDB76B;
+}
+
+
+.footer {
+  /*position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  
+  */
+  clear: both;
+  position: relative;
+  height: 70px;
+  margin-top: 30px;
+  background-color: #efefef;
+  text-align: center;
+}
+}
