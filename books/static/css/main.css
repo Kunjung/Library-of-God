@@ -93,6 +93,11 @@ a {
   font-size: 20px;
 }
 
+.matchhighlight {
+  border: 5px solid #2ECC40;
+  padding: 1px;
+}
+
 .exchanged {
   border: 9px solid #2ECC40;
   background-color: #606060;
@@ -104,7 +109,6 @@ a {
 .notexchanged {
   border: 2px solid #BDB76B;
   font-size: 20px;
-
 }
 
 .photo {
@@ -114,18 +118,10 @@ a {
 
 
 .footer {
-  /*position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
-  
-  */
   clear: both;
   position: relative;
   height: 70px;
   margin-top: 30px;
   background-color: #efefef;
   text-align: center;
-}
 }

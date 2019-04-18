@@ -40,7 +40,8 @@ def person(request, person_id):
 	context = {
 		"person": person,
 		"books": person.books.all(),
-		"wishes": person.wishes.all()
+		"wishes": person.wishes.all(),
+		"matched_wishes": person.wishes.filter(fulfilled=True)
 	}
 	return render(request, "books/person.html", context)
 

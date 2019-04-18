@@ -13,27 +13,32 @@
 
     <hr>
 
-	<h3>All Books owned by {{ person.name }} <a href="{% url 'yourbooks' person.id %}"> Book List</a> </h3>
+	<h4>All Books owned by {{ person.name }} <a href="{% url 'yourbooks' person.id %}"> Book List</a> </h4>
 	<ul>
 		{% for book in books %}
 			<li> {{ book }} </li>
 		{% endfor %}
 	</ul>
 
-	<h3>All Wishes made by {{ person.name }} <a href="{% url 'yourwishes' person.id %}"> Wish List </a> </h3>
+	<h4>All Wishes made by {{ person.name }} <a href="{% url 'yourwishes' person.id %}"> Wish List </a> </h4>
 	<ul>
 		{% for wish in wishes %}
 			<li> {{ wish.book }} </li>
 		{% endfor %}
 	</ul>
-	<h3>All Matches for {{ person.name }} <a href="{% url 'yourmatches' person.id %}"> Match List </a> </h3>
+	<h4>All Matches for {{ person.name }} <a href="{% url 'yourmatches' person.id %}"> Match List </a> </h4>
+	<ul>
+		{% for wish in matched_wishes %}
+			<li> Your wish for <span class="matchhighlight">{{ wish.book }}</span> has been fulfilled by {{ wish.angel }}</li>
+		{% endfor %}
+	</ul>
 
-	<h3>All Exchanges ToDo for {{ person.name }} 
+	<h4>All Exchanges ToDo for {{ person.name }} 
 		<a href="{% url 'yourexchanges' person.id %}"> 
 			Exchange List
 			<span class="center available"> Time to Meet someone in person </span> 
 		</a> 
-	</h3>
+	</h4>
 
 
 
