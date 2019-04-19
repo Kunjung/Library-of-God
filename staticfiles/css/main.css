@@ -1,0 +1,134 @@
+body {
+    padding-left: 65px;
+    padding-right: 65px;
+    font-family: 'Sue Ellen Francisco', cursive;
+    font-size: 32px;
+    color: #232B2B;
+}
+h1, h2, h3, h4 {
+    font-family: 'Amatic SC', bold;
+}
+
+h1 {
+    font-size: 100px;
+}
+
+h2 {
+    font-size: 60px;
+}
+
+h3 {
+    font-size: 50px;
+}
+
+h4 {
+    font-size: 40px;
+}
+
+a {
+    color: #C25100;
+    font-family: 'Amatic SC', bold;
+}
+.wish {
+    color: #12DE10;
+    font-family: 'Amatic SC', bold;
+}
+.error {
+    color: #DE2020;
+}
+.kingqueen {
+    color: #C25100;
+}
+
+.intro {
+  color: #C25100;
+  font-size: 26px;
+}
+
+.image {
+    alt: "Top Contributor";
+    width: 250px;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.left {
+  float: left;
+  width: 320px;
+  border: 2px solid #C25100;
+  padding: 20px;
+}
+
+.right {
+  float: right;
+  width: 320px;
+  border: 2px solid #C25100;
+  padding: 20px;
+}
+
+
+
+.fulfilled {
+  border: 18px solid #2ECC40;
+  background-color: #606060;
+  color: #FFFFFF;
+  font-size: 50px;
+  border-radius: 15px 50px 30px 5px
+}
+
+
+.notfulfilled {
+  border: 2px solid #BDB76B;
+  font-size: 20px;
+}
+
+.available {
+  border: 9px solid #2ECC40;
+  background-color: #606060;
+  color: #FFFFFF;
+  border-radius: 7px 50px 30px 5px;
+  font-size: 35px;
+}
+.notavailable {
+  border: 2px solid #BDB76B;
+  font-size: 20px;
+}
+
+.matchhighlight {
+  font-family: 'Amatic SC', bold;
+  border: 5px solid #2ECC40;
+  padding: 1px;
+  font-size: 40px;
+}
+
+.exchanged {
+  border: 9px solid #2ECC40;
+  background-color: #606060;
+  color: #FFFFFF;
+  border-radius: 7px 50px 30px 5px;
+  font-size: 25px;
+}
+
+.notexchanged {
+  border: 2px solid #BDB76B;
+  font-size: 20px;
+}
+
+.photo {
+  width: 350px;
+  border: 2px solid #BDB76B;
+}
+
+
+.footer {
+  clear: both;
+  position: relative;
+  height: 70px;
+  margin-top: 30px;
+  background-color: #efefef;
+  text-align: center;
+}
