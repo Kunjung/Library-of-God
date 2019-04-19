@@ -40,6 +40,11 @@ a {
     color: #C25100;
 }
 
+.intro {
+  color: #C25100;
+  font-size: 26px;
+}
+
 .image {
     alt: "Top Contributor";
     width: 250px;
@@ -94,8 +99,10 @@ a {
 }
 
 .matchhighlight {
+  font-family: 'Amatic SC', bold;
   border: 5px solid #2ECC40;
   padding: 1px;
+  font-size: 40px;
 }
 
 .exchanged {

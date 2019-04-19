@@ -13,7 +13,9 @@ from .algorithm_king_and_queen import begin_King_and_Queen_Match
 ## Index Page shows all the books that have the Field value of "Available" = True
 def index(request):
 	context = {
-		"books": Book.objects.all()
+		"books": Book.objects.all(),
+		"book_number": len(Book.objects.all()),
+		"people_number": len(Person.objects.all())
 	}
 	return render(request, "books/index.html", context)
 
