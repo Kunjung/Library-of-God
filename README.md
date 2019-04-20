@@ -1,4 +1,4 @@
-# Library of God
+# The Community Library
 
 ## A Collective Library for you and your friends circle + your family circle
 
