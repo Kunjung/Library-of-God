@@ -41,8 +41,8 @@ def order_remaining_wishes(wished_books_list, all_books_list):
         try:
             new_all_books_list.remove(wished_book)
         except Exception as e:
-            pass
-            # print(e)
+            print(e)
+            # pass
             # print(wished_book, all_books_list)
 
     similarity_scores = []
