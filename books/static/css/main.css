@@ -123,7 +123,6 @@ a {
   border: 2px solid #BDB76B;
 }
 
-
 .footer {
   clear: both;
   position: relative;
@@ -131,4 +130,9 @@ a {
   margin-top: 30px;
   background-color: #efefef;
   text-align: center;
+}
+
+table, tr, th, td {
+    border: 1px solid black;
+    padding: 5px;
 }
