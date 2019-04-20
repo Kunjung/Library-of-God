@@ -199,7 +199,6 @@ def yourexchanges(request, person_id):
 		person = Person.objects.get(pk=person_id)
 		# exchanges = Exchange.objects.filter(king=person).exclude(meeting=True) ## SHOW only exchagnes where meeting isn't done
 		exchanges = Exchange.objects.filter(king=person) ## SHOW all exchanges
-		queen_meeting_done = Exchanges.objects.filter(queen=person)
 	except Person.DoesNotExist:
 		raise Http404("Person does not exist.")
 	except Exchange.DoesNotExist:
@@ -305,31 +304,77 @@ def match(request):
 
 
 def meeting_done(request, person_id):
-	try:
+	# try:
 		
-		person = Person.objects.get(pk=person_id)
+	person = Person.objects.get(pk=person_id)
+	
+	exchange_id = int(request.POST["exchange_id"])
+	meeting = request.POST.get("meeting", False)
+	exchange = Exchange.objects.get(pk=exchange_id)
+
+	meeting = bool(meeting)
+
+	if exchange.king != person:
+		return render(request, "books/error.html", {"message": "Can't change someone else's meeting."})
+
+	### CHeck if the anti exchange pair is available
+	anti_exchange = Exchange.objects.filter(queen=person).first() ### filter(kingmeeting=True).filter(queenmeeting=False).first()
+
+	print(anti_exchange)
+	### IF anti exchange pair is found, then set queen meeting of this exchange to True
+	if anti_exchange:
+		exchange.kingmeeting = meeting
+		exchange.save()
+
+
+		anti_exchange.queenmeeting = meeting 		### The anti exchange pairs queen has also done the meeting
+		anti_exchange.save()
 		
-		exchange_id = int(request.POST["exchange_id"])
-		meeting = request.POST.get("meeting", False)
-		exchange = Exchange.objects.get(pk=exchange_id)
+		#### see if the king meeting for the anti exchange pair is True and the king meeting for the current exchange pair is True
+		#### This is the condition for when there both have confirmed that they've made the exchange
+		if anti_exchange.kingmeeting == True and exchange.kingmeeting == True:
 
-		meeting = bool(meeting)
+			## Find the anti person that is the queen for the exchange
+			anti_person = exchange.queen
+			
+			exchange.queenmeeting = True 	### and set queen meeting of that exchange to True too
+			anti_exchange.queenmeeting	= True ### same for the anti exchange
 
-		if exchange.king != person:
-			return render(request, "books/error.html", {"message": "Can't change someone else's meeting."})
+			### Delete The wish of the person for the books on both sides
+			anti_person.wishes.all().delete()
+			person.wishes.all().delete()
+			
+			anti_person.save()
+			person.save()
 
-	except KeyError:
-		# available = request.POST["available"]
-		message = "Key Error " + str(meeting)
-		print(message)
-		return render(request, "books/error.html", {"message": message})
-	except Person.DoesNotExist:
-		return render(request, "books/error.html", {"message": "No person."})
-	except Book.DoesNotExist:
-		return render(request, "books/error.html", {"message": "No book."})
-	except:
-		return render(request, "books/error.html", {"message": "Unknown Error"})
+			### Change Ownership of the books
+			particle_book = person.books.first()
+			anti_particle_book = anti_person.books.first()
 
-	exchange.meeting = meeting
-	exchange.save()
+			particle_book.owner = anti_person
+			anti_particle_book.owner = person
+
+			### Set the exchanged books to unavailable for now
+			particle_book.available = False
+			anti_particle_book.available = False
+
+			particle_book.save()
+			anti_particle_book.save()
+
+	else:
+		return render(request, "books/error.html", {"message": "Couldn't find the exchange pair"})
+
+	# except KeyError:
+	# 	# available = request.POST["available"]
+	# 	message = "Key Error " + str(meeting)
+	# 	print(message)
+	# 	return render(request, "books/error.html", {"message": message})
+	# except Person.DoesNotExist:
+	# 	return render(request, "books/error.html", {"message": "No person."})
+	# except Book.DoesNotExist:
+	# 	return render(request, "books/error.html", {"message": "No book."})
+	# except:
+	# 	return render(request, "books/error.html", {"message": "Unknown Error"})
+
+	
 	return HttpResponseRedirect(reverse("yourexchanges", args=(person_id,) ))

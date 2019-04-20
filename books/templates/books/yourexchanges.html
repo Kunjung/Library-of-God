@@ -40,19 +40,30 @@
             <li class="center">
 
                 <span class="notavailable center">If you've met in person and made the exchange, set your meeting to True. After both set their meeting to True, the change in the book ownership will be reflected in the Virtual Library.</span>
-                <form action="{% url 'meeting_done' person.id %}" method="post">
-                    {% csrf_token %}
 
-                    Got the Book?
-                    <select name="exchange_id">
-                        <option value="{{ e.id }}"> {{ e.queenbook }} </option>
-                    </select>
-                    <br>
-                    Meeting Done: 
-                    <input type="checkbox" name="meeting" checked>
+                {% if e.kingmeeting and not e.queenmeeting %}
+                    <p class="kingqueen"> Waiting for Exchange Partner to validate meeting before Book Ownership Changes.</p>
+                
+                {% elif e.kingmeeting and e.queenmeeting %}
+                    <p class="kingqueen"> WOHOO!! Congrats!!! The Exchange is complete.</p>
+                    <p class="notavailable center"> Book Ownership has been swapped now. </p>
 
-                    <input type="submit" value="Check if meeting done">
-                </form>
+                {% else %}
+                    <form action="{% url 'meeting_done' person.id %}" method="post">
+                        {% csrf_token %}
+
+                        Got the Book?
+                        <select name="exchange_id">
+                            <option value="{{ e.id }}"> {{ e.queenbook }} </option>
+                        </select>
+                        <br>
+                        Meeting Done: 
+                        <input type="checkbox" name="meeting" checked>
+
+                        <input type="submit" value="Check if meeting done">
+                    </form>
+
+                {% endif %}
 
             </li>
 

@@ -42,4 +42,4 @@ class Exchange(models.Model):
     queenmeeting = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.king} should meet {self.queen} in person. Is Meeting Done?: {self.meeting}"
+        return f"{self.king} should meet {self.queen} in person."
