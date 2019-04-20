@@ -197,7 +197,9 @@ def allexchanges(request):
 def yourexchanges(request, person_id):
 	try:
 		person = Person.objects.get(pk=person_id)
-		exchanges = Exchange.objects.filter(king=person).exclude(meeting=True)
+		# exchanges = Exchange.objects.filter(king=person).exclude(meeting=True) ## SHOW only exchagnes where meeting isn't done
+		exchanges = Exchange.objects.filter(king=person) ## SHOW all exchanges
+		queen_meeting_done = Exchanges.objects.filter(queen=person)
 	except Person.DoesNotExist:
 		raise Http404("Person does not exist.")
 	except Exchange.DoesNotExist:
@@ -287,7 +289,7 @@ def match(request):
 			queen_book.save()
 
 		### For each king and queen pair, now make the exchange objects and set the meeting value to false
-		exchange = Exchange(king=king, queen=queen, meeting=False, kingbook=king_book, queenbook=queen_book) ### Not met yet. Gonna meet soon.
+		exchange = Exchange(king=king, queen=queen, kingmeeting=False, queenmeeting=False, kingbook=king_book, queenbook=queen_book) ### Not met yet. Gonna meet soon.
 		exchange.save()
 
 
