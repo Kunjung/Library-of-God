@@ -239,7 +239,6 @@ books = [
     'Why You Eat What You Eat by Rachel Herz',
     'You Can Fix Your Brain by Tom OBryan'
 ]
-
 books_list = []
 for book, person in zip(books, persons_list):
     b = Book(name=book, owner=person)

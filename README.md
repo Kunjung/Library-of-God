@@ -1,4 +1,4 @@
-# Library of God
+# The Community Library
 
 ## A Collective Library for you and your friends circle + your family circle
 
@@ -12,3 +12,5 @@ So a total of 100-200 people who will share their books with each other in book 
 https://library42.herokuapp.com/
 
 It worked!!!
+
+Now changing a few looks now
