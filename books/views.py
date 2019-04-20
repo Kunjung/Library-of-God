@@ -288,11 +288,19 @@ def match(request):
 		
 		### The queen's book is what is being wished for, the king makes the wish so he is the wisher and the queen is the angel
 		king_wish = Wish.objects.filter(book=queen_book, wisher=king, angel=queen).first()
+
 		if king_wish:
 			king_wish.fulfilled = True
 			king_wish.save()
 
 			### Now the queen's book becomes not available for anyone else. It is married now.
+			queen_book.available = False
+			queen_book.save()
+
+		else:
+			### There is no king wish, but we know that there is a Match from remaining books, so make a new wish
+			new_king_wish = Wish(book=queen_book, wisher=king, angel=queen, fulfilled=True)
+			new_king_wish.save()
 			queen_book.available = False
 			queen_book.save()
 
