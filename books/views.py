@@ -283,6 +283,12 @@ def match(request):
             queen_book.available = False
             queen_book.save()
 
+        else:
+            new_king_wish = Wish(book=queen_book, wisher=king, angel=queen, fulfilled=True)
+            new_king_wish.save()
+            queen_book.available = False
+            queen_book.save()
+
         # For each king and queen pair, now make the exchange objects and set the meeting value to false
         exchange = Exchange(
             king=king, queen=queen, kingmeeting=False, queenmeeting=False,
@@ -293,6 +299,8 @@ def match(request):
     context = {
         "matches": info_matches
     }
+    match_time_end = time.time()
+    print("match time: ", match_time_end - match_time_start)
     return render(request, "books/match.html", context)
 
 
@@ -354,9 +362,4 @@ def meeting_done(request, person_id):
 
     else:
         return render(request, "books/error.html", {"message": "Couldn't find the exchange pair"})
-
-    match_time_end = time.time()
-    print("match time: ", match_time_end - match_time_start)
-    return render(request, "books/match.html", context)
-
     return HttpResponseRedirect(reverse("yourexchanges", args=(person_id,)))
