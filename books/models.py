@@ -38,7 +38,8 @@ class Exchange(models.Model):
     kingbook = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="kingbook_exchanges", null=True)
     queenbook = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="queenbook_exchanges", null=True)
 
-    meeting = models.BooleanField(default=False)
+    kingmeeting = models.BooleanField(default=False)
+    queenmeeting = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.king} should meet {self.queen} in person. Is Meeting Done?: {self.meeting}"
+        return f"{self.king} should meet {self.queen} in person. King Met? {self.kingmeeting}. Queen Met? {self.queenmeeting}"

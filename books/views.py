@@ -186,7 +186,7 @@ def yourmatches(request, person_id):
 
 
 def allexchanges(request):
-    exchanges = Exchange.objects.all()
+	exchanges = Exchange.objects.filter(kingmeeting=False).filter(queenmeeting=False)
 
     context = {
         "exchanges": exchanges,
@@ -196,13 +196,13 @@ def allexchanges(request):
 
 
 def yourexchanges(request, person_id):
-    try:
-        person = Person.objects.get(pk=person_id)
-        exchanges = Exchange.objects.filter(king=person).exclude(meeting=True)
+	try:
+		person = Person.objects.get(pk=person_id)
+		exchanges = Exchange.objects.filter(king=person)
     except Person.DoesNotExist:
-        raise Http404("Person does not exist.")
-    except Exchange.DoesNotExist:
-        raise Http404("Exchange does not exist.")
+		raise Http404("Person does not exist.")
+	except Exchange.DoesNotExist:
+		raise Http404("Exchange does not exist.")
 
     context = {
         "person": person,
@@ -215,92 +215,182 @@ def yourexchanges(request, person_id):
 ################# King and Queen Matching View  ############################################################################################################
 def match(request):
 
-    all_books = Book.objects.filter(available=True)		### All books will be kings and queens at the same time. They'll have the rank order of last for themselves
-
     complete_book_collection = Book.objects.all()
-
     ## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
     ## Stop it if it fails the Condition #1.
     if len(all_books) < 2/3 * len(complete_book_collection):
         message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + " .  Available Book Number: " + str(len(all_books))
         return render(request, "books/error.html", {"message": message})
 
-    ## STOP CONDITION #2. Stop King Queen Match when not enough wishes are made.
-    ## Every 2/3 person should make at least 3 wishes. Otherwise, don't run algorithm
-    all_persons = Person.objects.all()
+	all_books = Book.objects.filter(available=True)		### All books will be kings and queens at the same time. They'll have the rank order of last for themselves
 
-    faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
-    all_king_preferences = []
-    all_books_name = [book.name for book in Book.objects.all()]
+	## STOP CONDITION #2. Stop King Queen Match when not enough wishes are made.
+	## Every person should make at least 3 wishes. Otherwise, don't run algorithm
+	all_persons = Person.objects.all()
+	STOP = False
+	for person in all_persons:
+		if len(person.wishes.all()) < 2:
+			STOP = True
+			break
 
-    for book in all_books:
-        all_books_name_copy = list(all_books_name)
-        all_books_name_copy.remove(book.name)
-        king_preference = []
-        wishes = book.owner.wishes.filter(fulfilled=False).order_by('rank')
-        queen_books = [wish.book.id for wish in wishes]
-        for queen_book in queen_books:
-            king_preference.append(queen_book)
-
-        ### Make sure the remaining_books is ordered in a random way for every user
-        remaining_books = Book.objects.exclude(id__in=king_preference).exclude(id__in=[book.id])
-        wished_books = [wish.book.name for wish in wishes]
-        remaining_books = order_remaining_wishes(wished_books, all_books_name_copy)
-        for r_book in remaining_books:
-            book = Book.objects.filter(name=r_book).first()
-            king_preference.append(book.id)
-
-        ### Adding yourself to the very end for the non match
-        king_preference.append(book.id)
-
-        ### ADDING king_preference of book b[i]
-        all_king_preferences.append(king_preference)
-
-    ### Now change all the king preferences from being strings to being indexes based on the faces list
-    all_king_preferences_indexed = []
-    for king_preference in all_king_preferences:
-        king_preference_indexed = [faces.index(king_p) for king_p in king_preference]
-        all_king_preferences_indexed.append(king_preference_indexed)
+	if STOP == True:
+		message = "Algorithm not ready. Not enough wishes have been made so far."
+		return render(request, "books/error.html", {"message": message})
 
 
-    ### King and Queen preferences are the same for the same book
-    matches = begin_King_and_Queen_Match(faces, king_preferences=all_king_preferences_indexed, queen_preferences=all_king_preferences_indexed)
-    info_matches = []
-    for (king_id, queen_id) in matches:
-        king_book = Book.objects.get(pk=king_id)
-        queen_book = Book.objects.get(pk=queen_id)
-        king_owner = king_book.owner
-        queen_owner = queen_book.owner
-        info_match = f"{king_book} (Person: {king_owner}) --------> matched to ---------> {queen_book} (Person: {queen_owner}) "
-        info_matches.append(info_match)
+	faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
+	all_king_preferences = []
+
+	for book in all_books:
+		king_preference = []
+		wishes = book.owner.wishes.filter(fulfilled=False).order_by('rank')
+		queen_books = [wish.book.id for wish in wishes]
+		for queen_book in queen_books:
+			king_preference.append(queen_book)
+
+		### Make sure the remaining_books is ordered in a random way for every user
+		remaining_books = Book.objects.exclude(id__in=king_preference).exclude(id__in=[book.id])
+		for r_book in remaining_books:
+			king_preference.append(r_book.id)
+
+		### Adding yourself to the very end for the non match
+		king_preference.append(book.id)
+
+		### ADDING king_preference of book b[i]
+		all_king_preferences.append(king_preference)
+
+	### Now change all the king preferences from being strings to being indexes based on the faces list
+	all_king_preferences_indexed = []
+	for king_preference in all_king_preferences:
+		king_preference_indexed = [faces.index(king_p) for king_p in king_preference]
+		all_king_preferences_indexed.append(king_preference_indexed)
 
 
-    ### Set all the kings wishes to fulfilled = True
-    for (king_id, queen_id) in matches:
-        king_book = Book.objects.get(pk=king_id)
-        queen_book = Book.objects.get(pk=queen_id)
-        king = king_book.owner
-        queen = queen_book.owner
+	### King and Queen preferences are the same for the same book
+	matches = begin_King_and_Queen_Match(faces, king_preferences=all_king_preferences_indexed, queen_preferences=all_king_preferences_indexed)
+	info_matches = []
+	for (king_id, queen_id) in matches:
+		king_book = Book.objects.get(pk=king_id)
+		queen_book = Book.objects.get(pk=queen_id)
+		king_owner = king_book.owner
+		queen_owner = queen_book.owner
+		info_match = f"{king_book} (Person: {king_owner}) --------> matched to ---------> {queen_book} (Person: {queen_owner}) "
+		info_matches.append(info_match)
 
-        ### The queen's book is what is being wished for, the king makes the wish so he is the wisher and the queen is the angel
-        king_wish = Wish.objects.filter(book=queen_book, wisher=king, angel=queen).first()
-        if king_wish:
-            king_wish.fulfilled = True
-            king_wish.save()
 
-            ### Now the queen's book becomes not available for anyone else. It is married now.
-            queen_book.available = False
-            queen_book.save()
+	### Set all the kings wishes to fulfilled = True
+	for (king_id, queen_id) in matches:
+		king_book = Book.objects.get(pk=king_id)
+		queen_book = Book.objects.get(pk=queen_id)
+		king = king_book.owner
+		queen = queen_book.owner
 
-        ### For each king and queen pair, now make the exchange objects and set the meeting value to false
-        exchange = Exchange(king=king, queen=queen, meeting=False, kingbook=king_book, queenbook=queen_book) ### Not met yet. Gonna meet soon.
-        exchange.save()
+		### The queen's book is what is being wished for, the king makes the wish so he is the wisher and the queen is the angel
+		king_wish = Wish.objects.filter(book=queen_book, wisher=king, angel=queen).first()
 
-    context = {
-        "matches": info_matches
-    }
+		if king_wish:
+			king_wish.fulfilled = True
+			king_wish.save()
 
-    return render(request, "books/match.html", context)
+			### Now the queen's book becomes not available for anyone else. It is married now.
+			queen_book.available = False
+			queen_book.save()
+
+		else:
+			### There is no king wish, but we know that there is a Match from remaining books, so make a new wish
+			new_king_wish = Wish(book=queen_book, wisher=king, angel=queen, fulfilled=True)
+			new_king_wish.save()
+			queen_book.available = False
+			queen_book.save()
+
+		### For each king and queen pair, now make the exchange objects and set the meeting value to false
+		exchange = Exchange(king=king, queen=queen, kingmeeting=False, queenmeeting=False, kingbook=king_book, queenbook=queen_book) ### Not met yet. Gonna meet soon.
+		exchange.save()
+
+
+	context = {
+		"matches": info_matches
+	}
+
+	return render(request, "books/match.html", context)
 
 
 ###############################################################################################################################################
+
+
+
+def meeting_done(request, person_id):
+	# try:
+
+	person = Person.objects.get(pk=person_id)
+
+	exchange_id = int(request.POST["exchange_id"])
+	meeting = request.POST.get("meeting", False)
+	exchange = Exchange.objects.get(pk=exchange_id)
+
+	meeting = bool(meeting)
+
+	if exchange.king != person:
+		return render(request, "books/error.html", {"message": "Can't change someone else's meeting."})
+
+	### CHeck if the anti exchange pair is available
+	anti_exchange = Exchange.objects.filter(queen=person).first() ### filter(kingmeeting=True).filter(queenmeeting=False).first()
+
+	print(anti_exchange)
+	### IF anti exchange pair is found, then set queen meeting of this exchange to True
+	if anti_exchange:
+		exchange.kingmeeting = meeting
+		exchange.save()
+
+
+		anti_exchange.queenmeeting = meeting 		### The anti exchange pairs queen has also done the meeting
+		anti_exchange.save()
+
+		#### see if the king meeting for the anti exchange pair is True and the king meeting for the current exchange pair is True
+		#### This is the condition for when there both have confirmed that they've made the exchange
+		if anti_exchange.kingmeeting == True and exchange.kingmeeting == True:
+
+			## Find the anti person that is the queen for the exchange
+			anti_person = exchange.queen
+
+			exchange.queenmeeting = True 	### and set queen meeting of that exchange to True too
+			anti_exchange.queenmeeting	= True ### same for the anti exchange
+
+			### Delete The wish of the person for the books on both sides
+			anti_person.wishes.all().delete()
+			person.wishes.all().delete()
+
+			anti_person.save()
+			person.save()
+
+			### Change Ownership of the books
+			particle_book = person.books.first()
+			anti_particle_book = anti_person.books.first()
+
+			particle_book.owner = anti_person
+			anti_particle_book.owner = person
+
+			### Set the exchanged books to unavailable for now
+			particle_book.available = False
+			anti_particle_book.available = False
+
+			particle_book.save()
+			anti_particle_book.save()
+
+	else:
+		return render(request, "books/error.html", {"message": "Couldn't find the exchange pair"})
+
+	# except KeyError:
+	# 	# available = request.POST["available"]
+	# 	message = "Key Error " + str(meeting)
+	# 	print(message)
+	# 	return render(request, "books/error.html", {"message": message})
+	# except Person.DoesNotExist:
+	# 	return render(request, "books/error.html", {"message": "No person."})
+	# except Book.DoesNotExist:
+	# 	return render(request, "books/error.html", {"message": "No book."})
+	# except:
+	# 	return render(request, "books/error.html", {"message": "Unknown Error"})
+
+
+	return HttpResponseRedirect(reverse("yourexchanges", args=(person_id,) ))
