@@ -1,3 +1,5 @@
+import time
+
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
@@ -214,26 +216,21 @@ def yourexchanges(request, person_id):
 #######################################################################################################################################################
 ################# King and Queen Matching View  ############################################################################################################
 def match(request):
-
-    all_books = Book.objects.filter(available=True)		### All books will be kings and queens at the same time. They'll have the rank order of last for themselves
-
-    complete_book_collection = Book.objects.all()
-
-    ## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
-    ## Stop it if it fails the Condition #1.
-    if len(all_books) < 2/3 * len(complete_book_collection):
-        message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + " .  Available Book Number: " + str(len(all_books))
-        return render(request, "books/error.html", {"message": message})
-
-    ## STOP CONDITION #2. Stop King Queen Match when not enough wishes are made.
-    ## Every 2/3 person should make at least 3 wishes. Otherwise, don't run algorithm
-    all_persons = Person.objects.all()
-
-    faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
+    match_time_start = time.time()
+    # All books will be kings and queens at the same time.
+    # They'll have the rank order of last for themselves
+    all_books = Book.objects.filter(available=True)
+    all_books_dict = {}
+    for book in all_books:
+        all_books_dict[book.name] = book
+    all_books_name = [book for book in all_books_dict.keys()]
+    # For now just check on the book names. later find the book id, okay. bro
+    faces = [book.id for book in all_books]
     all_king_preferences = []
-    all_books_name = [book.name for book in Book.objects.all()]
 
     for book in all_books:
+        start_time = time.time()
+
         all_books_name_copy = list(all_books_name)
         all_books_name_copy.remove(book.name)
         king_preference = []
@@ -242,28 +239,30 @@ def match(request):
         for queen_book in queen_books:
             king_preference.append(queen_book)
 
-        ### Make sure the remaining_books is ordered in a random way for every user
-        remaining_books = Book.objects.exclude(id__in=king_preference).exclude(id__in=[book.id])
+        # Make sure the remaining_books is ordered intelligently
         wished_books = [wish.book.name for wish in wishes]
         remaining_books = order_remaining_wishes(wished_books, all_books_name_copy)
         for r_book in remaining_books:
-            book = Book.objects.filter(name=r_book).first()
+            # book = Book.objects.get(name=r_book)
+            book = all_books_dict[r_book]
             king_preference.append(book.id)
 
-        ### Adding yourself to the very end for the non match
+        # Adding yourself to the very end for the non match
         king_preference.append(book.id)
 
         ### ADDING king_preference of book b[i]
         all_king_preferences.append(king_preference)
+        end_time = time.time()
+        print("Single book time: ", end_time-start_time)
 
-    ### Now change all the king preferences from being strings to being indexes based on the faces list
+    # Now change all the king preferences from being strings to being indexes based on the faces list
     all_king_preferences_indexed = []
     for king_preference in all_king_preferences:
         king_preference_indexed = [faces.index(king_p) for king_p in king_preference]
         all_king_preferences_indexed.append(king_preference_indexed)
 
 
-    ### King and Queen preferences are the same for the same book
+    # King and Queen preferences are the same for the same book
     matches = begin_King_and_Queen_Match(faces, king_preferences=all_king_preferences_indexed, queen_preferences=all_king_preferences_indexed)
     info_matches = []
     for (king_id, queen_id) in matches:
@@ -271,8 +270,8 @@ def match(request):
         queen_book = Book.objects.get(pk=queen_id)
         king_owner = king_book.owner
         queen_owner = queen_book.owner
-        info_match = f"{king_book} (Person: {king_owner}) --------> matched to ---------> {queen_book} (Person: {queen_owner}) "
-        info_matches.append(info_match)
+        match_info = [king_owner, king_book, queen_owner, queen_book]
+        info_matches.append(match_info)
 
 
     ### Set all the kings wishes to fulfilled = True
@@ -300,6 +299,8 @@ def match(request):
         "matches": info_matches
     }
 
+    match_time_end = time.time()
+    print("match time: ", match_time_end - match_time_start)
     return render(request, "books/match.html", context)
 
 
