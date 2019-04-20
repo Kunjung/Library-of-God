@@ -19,5 +19,7 @@ urlpatterns = [
     path('person/<int:person_id>/yourmatches', views.yourmatches, name='yourmatches'),
     path('person/<int:person_id>/yourexchanges', views.yourexchanges, name='yourexchanges'),
 
+    path('person/<int:person_id>/meeting_done', views.meeting_done, name='meeting_done'),
+
     path('match', views.match, name='match'), ##### Triggers the KING QUEEN matching ALGORITHM. Only works once the available books is 2/3 * Total books
 ]

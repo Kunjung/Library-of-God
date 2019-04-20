@@ -35,6 +35,25 @@
                 <p>Book: {{ e.queenbook }}</p>
         	</div>
 
+            <li class="center">
+
+                <span class="notavailable center">If you've met in person and made the exchange, set your meeting to True. After both set their meeting to True, the change in the book ownership will be reflected in the Virtual Library.</span>
+                <form action="{% url 'meeting_done' person.id %}" method="post">
+                    {% csrf_token %}
+
+                    Got the Book?
+                    <select name="exchange_id">
+                        <option value="{{ e.id }}"> {{ e.queenbook }} </option>
+                    </select>
+                    <br>
+                    Meeting Done: 
+                    <input type="checkbox" name="meeting" checked>
+
+                    <input type="submit" value="Check if meeting done">
+                </form>
+
+            </li>
+
         {% empty %}
             <li> No matches yet.</li>
         {% endfor %}

@@ -299,3 +299,35 @@ def match(request):
 
 
 ###############################################################################################################################################
+
+
+
+def meeting_done(request, person_id):
+	try:
+		
+		person = Person.objects.get(pk=person_id)
+		
+		exchange_id = int(request.POST["exchange_id"])
+		meeting = request.POST.get("meeting", False)
+		exchange = Exchange.objects.get(pk=exchange_id)
+
+		meeting = bool(meeting)
+
+		if exchange.king != person:
+			return render(request, "books/error.html", {"message": "Can't change someone else's meeting."})
+
+	except KeyError:
+		# available = request.POST["available"]
+		message = "Key Error " + str(meeting)
+		print(message)
+		return render(request, "books/error.html", {"message": message})
+	except Person.DoesNotExist:
+		return render(request, "books/error.html", {"message": "No person."})
+	except Book.DoesNotExist:
+		return render(request, "books/error.html", {"message": "No book."})
+	except:
+		return render(request, "books/error.html", {"message": "Unknown Error"})
+
+	exchange.meeting = meeting
+	exchange.save()
+	return HttpResponseRedirect(reverse("yourexchanges", args=(person_id,) ))
