@@ -25,6 +25,7 @@ print("Done Deleting ALL Data")
 print("***************************")
 print("Adding People:")
 persons = ["Dolma", "Kunjung", "Mingmar", "Aagya", "Kushal", "Galileo"]
+persons = persons[:4]
 
 persons_list = []
 for person in persons:
@@ -43,6 +44,7 @@ books = ["Win Friends and Influence People",
         "Arthatantra",
         "All of me"
 ]
+books = books[:4]
 books_list = []
 for i, book in enumerate(books):
     b = Book(name=book, owner=persons_list[i]) ## Set the ith book owner to the ith person
@@ -54,12 +56,10 @@ print("#######################################")
 
 print("Adding Wishes")
 wish_orders = [
-    (6, 2, 4),
-    (5, 1, 6),
-    (5, 4, 6),
-    (1, 2, 3),
-    (1, 2, 3),
-    (1, 4, 5)
+    (2, 3),
+    (1, 3),
+    (2, 4),
+    (1, 2),
 ]
 
 for i, wish_order in enumerate(wish_orders):

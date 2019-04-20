@@ -185,7 +185,7 @@ def yourmatches(request, person_id):
 
 
 def allexchanges(request):
-	exchanges = Exchange.objects.all()
+	exchanges = Exchange.objects.filter(kingmeeting=False).filter(queenmeeting=False)
 
 	context = {
 		"exchanges": exchanges,
@@ -219,15 +219,24 @@ def match(request):
 
 	complete_book_collection = Book.objects.all()
 
-	## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
+	## Trigger King Queen Matching Algorithm only when available books is at least of all complete book collection
 	## Stop it if it fails the Condition #1.
-	if len(all_books) < 2/3 * len(complete_book_collection):
+	if len(all_books) < len(complete_book_collection):
 		message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + " .  Available Book Number: " + str(len(all_books))
 		return render(request, "books/error.html", {"message": message})
 
 	## STOP CONDITION #2. Stop King Queen Match when not enough wishes are made.
-	## Every 2/3 person should make at least 3 wishes. Otherwise, don't run algorithm
+	## Every person should make at least 3 wishes. Otherwise, don't run algorithm
 	all_persons = Person.objects.all()
+	STOP = False
+	for person in all_persons:
+		if len(person.wishes.all()) < 2:
+			STOP = True
+			break
+
+	if STOP == True:
+		message = "Algorithm not ready. Not enough wishes have been made so far."
+		return render(request, "books/error.html", {"message": message})
 
 
 	faces = [book.id for book in all_books]			### For now just check on the book names. later find the book id, okay. bro
