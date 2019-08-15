@@ -1,4 +1,6 @@
 # The Community Library
+A Good book that costs $8.00 is too expensive for students in Nepal. The best way to make it affordable to get expensive books is to share it, like in a library.
+But a library is mostly centered in the capital center which makes it time consuming to make the long distance trips back and forth. So, a virtual library among local people living close together is the best option.
 
 ## The 3 Minute Presentation for the Idea
 https://docs.google.com/presentation/d/1u9Y-ru2cDJYKQLjliMzv8bYqZGybGJOI_1bSvKMt8Wk/edit?usp=sharing
