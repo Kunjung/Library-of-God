@@ -304,12 +304,6 @@ def match(request):
         )
         exchange.save()
 
-        exchange2 = Exchange(
-            king=queen, queen=king, kingmeeting=False, queenmeeting=False,
-            kingbook=queen_book, queenbook=king_book
-        )
-        exchange2.save()
-
     context = {
         "matches": info_matches
     }
