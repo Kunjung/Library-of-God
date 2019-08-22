@@ -11,8 +11,8 @@
 	<p class="center">Number of People: {{ people_number }} --- Number of Books: {{ book_number }}</p> 
 	<p class="center"><a class="matchhighlight" href="{% url 'match' %}">Run the Match Making Algorithm</a></p>
 	
-	<p class="intro"> Have an old book lying around? Wanna read a new one? Well, exchange your old book for a new one from the Library.
-				Make 3 to 7 wishes for books that you want. And, after all the people have made their wishes, a match will be made for you.
+	<p class="intro"> Have an old book lying around? Wanna read a new one? But $20 is a lot of money. 
+		Time to learn the benefits of sharing. We'll do the match making for you depending on your preferences.
 	</p>
 
 	<p class="center">
@@ -30,7 +30,7 @@
 	
 	
 	<br>
-	<p> Book Availability List</p>
+	<h2> Book Availability List</h2>
 	<ul>
 		{% for book in books %}
 			<li>
