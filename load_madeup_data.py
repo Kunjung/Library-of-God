@@ -13,12 +13,13 @@ print("starting..................")
 print("*****************************")
 print("Deleting Previous Data")
 
-from books.models import Person, Book, Wish
+from books.models import Person, Book, Wish, Exchange
 
 ### DELETE ###
 Person.objects.all().delete()
 Book.objects.all().delete()
 Wish.objects.all().delete()
+Exchange.objects.all().delete()
 
 print("Done Deleting ALL Data")
 

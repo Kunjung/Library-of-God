@@ -24,3 +24,7 @@ https://docs.google.com/presentation/d/1u9Y-ru2cDJYKQLjliMzv8bYqZGybGJOI_1bSvKMt
 ### Just a Demo to show the algorithm works with 4 people:
 (Only a basic demo without any user login, so anyone can change the state) 
 https://library42.herokuapp.com/
+
+
+Run the /match route to trigger the algorithm and it should be done in 10s. You'll get the result soon.
+https://library42.herokuapp.com/match

@@ -194,7 +194,7 @@ def match(request):
     all_books = Book.objects.filter(available=True)
     ## Trigger King Queen Matching Algorithm only when available books is at least 2/3 of all complete book collection
     ## Stop it if it fails the Condition #1.
-    if len(all_books) < 2/3 * len(complete_book_collection):
+    if len(all_books) < 2:
         message = "Algorithm not ready. Total Book Number: " + str(len(complete_book_collection)) + " .  Available Book Number: " + str(len(all_books))
         return render(request, "books/error.html", {"message": message})
 
@@ -226,7 +226,7 @@ def match(request):
         start_time = time.time()
 
         all_books_name_copy = list(all_books_name)
-        all_books_name_copy.remove(book.name)
+        #all_books_name_copy.remove(book.name)
         king_preference = []
         wishes = book.owner.wishes.filter(fulfilled=False).order_by('rank')
         queen_books = [wish.book.id for wish in wishes]
