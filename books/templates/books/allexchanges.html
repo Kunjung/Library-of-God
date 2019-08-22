@@ -9,21 +9,20 @@
 {% block body %}
 	<h1>All Exchanges ToDo</h1>
 
-
-	<ul>
-		{% for e in exchanges %}
-			<li>
-				{% if e.meeting %}
-					--------------------------------------------------> <span class="exchanged"> {{ e }} </span>
-				{% else %}
-					<span class="notexchanged"> {{ e }} </span>
-				{% endif %}
-				
-			</li>
-			<br>
-		{% empty %}
-				<li> No Exchanges to do.</li>
-		{% endfor %}
-	</ul>
+	<table>
+        <tr>
+            <th>Person</th>
+            <th>Book</th>
+            <th>Person</th>
+            <th>Book</th>
+        </tr>
+        {% for match in matches %}
+            <tr>
+                {% for element in match %}
+                    <td> {{ element }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+	</table>
 
 {% endblock %}
