@@ -7,17 +7,17 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Pikachu's Collective Library 
-		<span class="matchhighlight">Number of People: {{ people_number }} 
-		--------- Number of Books: {{ book_number }}
-		</span> 
-	</h1>
+	<h1>Pikachu's Collective Library </h1>
+	<p class="center">Number of People: {{ people_number }} --- Number of Books: {{ book_number }}</p> 
+	<p class="center"><a class="matchhighlight" href="{% url 'match' %}">Run the Match Making Algorithm</a></p>
 	
 	<p class="intro"> Have an old book lying around? Wanna read a new one? Well, exchange your old book for a new one from the Library.
 				Make 3 to 7 wishes for books that you want. And, after all the people have made their wishes, a match will be made for you.
 	</p>
- 	
-	<br>
+
+	<p class="center">
+		<a class="matchhighlight" href="{% url 'allexchanges' %}">Exchanges to be Made List</a> 
+	</p>
 
 	<div class="right">
 		<h4>Top Contributor</h4>
@@ -26,6 +26,11 @@
 		<p>Name: Archer</p>
 	</div>
 
+	
+	
+	
+	<br>
+	<p> Book Availability List</p>
 	<ul>
 		{% for book in books %}
 			<li>
