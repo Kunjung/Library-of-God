@@ -5,8 +5,10 @@ import numpy as np
 
 import spacy
 
+import en_core_web_md
 
-nlp = spacy.load('en_core_web_md')
+nlp = en_core_web_md.load()
+
 book_vectors = {}
 
 def cosine_similarity(vec1, vec2):
