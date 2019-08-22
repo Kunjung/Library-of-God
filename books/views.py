@@ -9,7 +9,7 @@ from .models import Person, Book, Wish, Exchange
 
 # The Matching Algorithm #
 from .algorithm_king_and_queen import begin_King_and_Queen_Match
-from .order_nlp import order_remaining_wishes
+# from .order_nlp import order_remaining_wishes
 
 # Create your views here.
 
@@ -235,7 +235,15 @@ def match(request):
 
         # Make sure the remaining_books is ordered intelligently
         wished_books = [wish.book.name for wish in wishes]
-        remaining_books = order_remaining_wishes(wished_books, all_books_name_copy)
+        
+        remaining_books = all_books_name_copy[:]
+        for wished_book in wished_books:
+            try:
+                remaining_books.remove(wished_book)
+            except Exception as e:
+                print(e)
+
+        ## remaining_books = order_remaining_wishes(wished_books, all_books_name_copy)
         for r_book in remaining_books:
             # book = Book.objects.get(name=r_book)
             book = all_books_dict[r_book]

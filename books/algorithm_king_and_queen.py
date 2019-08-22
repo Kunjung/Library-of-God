@@ -7,10 +7,10 @@ class King():
         self.best_queen = best_queen
 
     def __str__(self):
-        return f"King of {self.name}"
+        return "King of {}".format(self.name)
 
     def __repr__(self):
-        return f"King of {self.name}"
+        return "King of {}".format(self.name)
 
     def propose_to_queen(self):
         queen = self.preference[self.choice_number]
@@ -29,10 +29,10 @@ class Queen():
         self.chosen = chosen
 
     def __str__(self):
-        return f"Queen of {self.name}"
+        return "Queen of {}".format(self.name)
 
     def __repr__(self):
-        return f"Queen of {self.name}"
+        return "Queen of {}".format(self.name)
 
     def choose_best_candidate(self):
         ranked_candidates = []

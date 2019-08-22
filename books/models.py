@@ -7,7 +7,7 @@ class Person(models.Model):
     photo = models.FileField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return "{}".format(self.name)
 
 class Book(models.Model):
     name = models.CharField(max_length=20, default="Invisible Book")
@@ -16,7 +16,7 @@ class Book(models.Model):
     available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return "{}".format(self.name)
 
 class Wish(models.Model):
 
@@ -28,7 +28,9 @@ class Wish(models.Model):
     rank = models.IntegerField(default=1)  ### The Number One Book
 
     def __str__(self):
-        return f"{self.wisher} wants '{self.book}' from {self.angel}"
+        return "{} wants {} from {}".format(
+            self.wisher, self.book, self.angel
+        )
 
 
 class Exchange(models.Model):
@@ -42,4 +44,6 @@ class Exchange(models.Model):
     queenmeeting = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.king} should meet {self.queen} in person. King Met? {self.kingmeeting}. Queen Met? {self.queenmeeting}"
+        return "{} should meet {} in person. King Met? {}. Queen Met? {}".format(
+            self.king, self.queen, self.kingmeeting, self.queenmeeting
+        )
