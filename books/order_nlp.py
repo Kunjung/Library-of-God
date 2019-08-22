@@ -5,9 +5,7 @@ import numpy as np
 
 import spacy
 
-import en_core_web_md
-
-nlp = en_core_web_md.load()
+nlp = spacy.load('en_core_web_md')
 
 book_vectors = {}
 
