@@ -1,0 +1,6 @@
+# IDE specific
+.vscode
+
+# djago specific
+__pycache__/
+*/**/__pycache__/

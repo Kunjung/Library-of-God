@@ -6,12 +6,20 @@
 
 {% block body %}
 	<h1>Books</h1>
-	<ul>
-		{% for match in matches %}
-			<li>
-			    <div class="kingqueen"> {{ match }} </div>
-			</li>
-		{% endfor %}
-	</ul>
+	<table>
+        <tr>
+            <th>Person</th>
+            <th>Book</th>
+            <th>Person</th>
+            <th>Book</th>
+        </tr>
+        {% for match in matches %}
+            <tr>
+                {% for element in match %}
+                    <td> {{ element }} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+	</table>
 
 {% endblock %}
