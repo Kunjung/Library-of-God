@@ -161,7 +161,7 @@ def yourmatches(request, person_id):
     return render(request, "books/yourmatches.html", context)
 
 def allexchanges(request):
-    exchanges = Exchange.objects.filter(kingmeeting=True).filter(queenmeeting=False)
+    exchanges = Exchange.objects.filter(kingmeeting=False)
 
     context = {
         "exchanges": exchanges,
