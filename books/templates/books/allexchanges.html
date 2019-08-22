@@ -11,18 +11,24 @@
 
 	<table>
         <tr>
-            <th>Person</th>
+            <th>King</th>
             <th>Book</th>
-            <th>Person</th>
+            <th>Meeting?</th>
+            <th>Queen</th>
             <th>Book</th>
+            <th>Meeting?</th>
         </tr>
-        {% for match in matches %}
+        {% for e in exchanges %}
             <tr>
-                {% for element in match %}
-                    <td> {{ element }} </td>
-                {% endfor %}
+                <td> {{ e.king }} </td>
+                <td> {{ e.kingbook }} </td>
+                <td> {{ e.kingmeeting }} </td>
+                <td> {{ e.queen }} </td>
+                <td> {{ e.queenbook }} </td>
+                <td> {{ e.queenmeeting }} </td>                
             </tr>
         {% endfor %}
 	</table>
+
 
 {% endblock %}

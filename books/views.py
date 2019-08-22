@@ -161,7 +161,7 @@ def yourmatches(request, person_id):
     return render(request, "books/yourmatches.html", context)
 
 def allexchanges(request):
-    exchanges = Exchange.objects.filter(kingmeeting=False).filter(queenmeeting=False)
+    exchanges = Exchange.objects.filter(kingmeeting=True).filter(queenmeeting=False)
 
     context = {
         "exchanges": exchanges,
@@ -303,6 +303,12 @@ def match(request):
             kingbook=king_book, queenbook=queen_book
         )
         exchange.save()
+
+        exchange2 = Exchange(
+            king=queen, queen=king, kingmeeting=False, queenmeeting=False,
+            kingbook=queen_book, queenbook=king_book
+        )
+        exchange2.save()
 
     context = {
         "matches": info_matches
