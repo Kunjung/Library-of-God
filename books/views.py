@@ -226,7 +226,7 @@ def match(request):
         start_time = time.time()
 
         all_books_name_copy = list(all_books_name)
-        #all_books_name_copy.remove(book.name)
+        all_books_name_copy.remove(book.name)
         king_preference = []
         wishes = book.owner.wishes.filter(fulfilled=False).order_by('rank')
         queen_books = [wish.book.id for wish in wishes]
@@ -244,10 +244,10 @@ def match(request):
                 print(e)
 
         ## remaining_books = order_remaining_wishes(wished_books, all_books_name_copy)
-        for r_book in remaining_books:
+        for remaining_book in remaining_books:
             # book = Book.objects.get(name=r_book)
-            book = all_books_dict[r_book]
-            king_preference.append(book.id)
+            r_book = all_books_dict[remaining_book]
+            king_preference.append(r_book.id)
 
         # Adding yourself to the very end for the non match
         king_preference.append(book.id)
